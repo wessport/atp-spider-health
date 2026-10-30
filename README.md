@@ -72,4 +72,7 @@ snapshots
 - Decide how the snapshot should handle spiders that disappear (`hard_deletes`).
 - Backfills: the incremental model only adds runs at or after its latest run, so loading older runs needs `dbt build --full-refresh`.
 - Optional: attribute completeness per spider from each run's Parquet output (`parquet_url`, ~3 GB per run).
-- Choose a license for this repository's code.
+
+## License
+
+This repository's code is released under the [MIT License](LICENSE). The AllThePlaces data it reads is CC0, as described above.
