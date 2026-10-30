@@ -1,0 +1,10 @@
+# Local-only DuckDB profile; no credentials. dbt reads profiles.yml from the
+# current directory, so run dbt from the repo root.
+atp_spider_health:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: atp_spider_health.duckdb
+      schema: main
+      threads: 4

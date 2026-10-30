@@ -1,0 +1,12 @@
+snapshots:
+  - name: spider_health_snapshot
+    description: >
+      Point-in-time history of each spider's health status. A new version is
+      recorded whenever health_status or last_run_id changes between builds.
+    relation: ref('mart_spider_health')
+    config:
+      unique_key: spider
+      strategy: check
+      check_cols: ["health_status", "last_run_id"]
+      # TODO: decide whether a spider that disappears should be closed out
+      # (hard_deletes: invalidate) and whether to track feature_count too.

@@ -1,0 +1,41 @@
+version: 2
+
+sources:
+  - name: atp
+    description: >
+      Public AllThePlaces run metadata (CC0), loaded by scripts/load_raw.py
+      into the `raw` schema of the local DuckDB file.
+    schema: raw
+    tables:
+      - name: runs
+        description: One row per run in https://data.alltheplaces.xyz/runs/history.json.
+        config:
+          loaded_at_field: start_time
+          # Runs appear in history.json only after they finish, roughly a week
+          # after they start, and ATP starts a run about once a week.
+          freshness:
+            warn_after: {count: 14, period: day}
+            error_after: {count: 30, period: day}
+        columns:
+          - name: run_id
+            data_tests:
+              - unique
+              - not_null
+          - name: stats_url
+            description: Missing for older runs; those runs have no spider stats.
+
+      - name: spider_run_stats
+        description: >
+          One row per spider per sampled run, from each run's
+          stats/_results.json. Only the runs chosen by the loader are present.
+        columns:
+          - name: run_id
+            data_tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: source('atp', 'runs')
+                    field: run_id
+          - name: spider
+            data_tests:
+              - not_null

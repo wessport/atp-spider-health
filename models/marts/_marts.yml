@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: fct_spider_runs
+    description: >
+      One row per spider per run with feature deltas and a per-run health
+      status. Built incrementally by run start time.
+    columns:
+      - name: spider_run_id
+        data_tests:
+          - unique
+          - not_null
+      - name: feature_count
+        data_tests:
+          - non_negative
+      - name: error_count
+        data_tests:
+          - non_negative
+      - name: health_status
+        description: "failing: zero features; warning: errors or a 50%+ feature drop; otherwise healthy."
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ["healthy", "warning", "failing"]
+
+  - name: mart_spider_health
+    description: One row per spider with the status of its most recent loaded run.
+    columns:
+      - name: spider
+        data_tests:
+          - unique
+          - not_null
+      - name: health_status
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ["healthy", "warning", "failing"]
+      - name: is_in_latest_run
+        description: False when the spider did not report in the latest loaded run.

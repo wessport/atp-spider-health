@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: int_spider_run_deltas
+    description: >
+      One row per spider per run with the feature change since the spider's
+      prior loaded run, plus zero-feature and error flags.
+    columns:
+      - name: spider_run_id
+        data_tests:
+          - unique
+          - not_null
