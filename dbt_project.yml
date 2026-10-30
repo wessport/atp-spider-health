@@ -4,8 +4,6 @@ config-version: 2
 profile: atp_spider_health
 
 model-paths: ["models"]
-snapshot-paths: ["snapshots"]
-test-paths: ["tests"]
 target-path: "target"
 clean-targets: ["target", "dbt_packages"]
 
@@ -13,7 +11,3 @@ models:
   atp_spider_health:
     staging:
       +materialized: view
-    intermediate:
-      +materialized: view
-    marts:
-      +materialized: table
